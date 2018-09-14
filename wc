@@ -1,0 +1,162 @@
+import java.io.BufferedReader;
+import java.io.FileInputStream;
+import java.io.InputStreamReader;
+import java.util.Scanner;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
+public class wc {
+	
+	public static void charNum()throws Exception
+	{ //文件导入
+  Scanner input = new Scanner(System.in);
+	  System.out.println("please input path:");
+	  String path = input.next();
+	  int countChar = 0;
+	  InputStreamReader isr = new InputStreamReader(new FileInputStream(path));
+	  BufferedReader br = new BufferedReader(isr);
+	  
+	  while(br.read()!=-1)//read()=-1代表数据读取完毕
+	  {
+	   String s = br.readLine();
+	   
+	   countChar += s.length();//字符个数就是字符长度
+	  }
+	  
+	  isr.close();//关闭文件
+	  System.out.println("字符个数 "+countChar);
+
+	}	 
+	
+	public static void wordNum()throws Exception
+	{Scanner input = new Scanner(System.in);
+	  System.out.println("please input path:");
+	  String path = input.next();
+	  int countword = 0;
+	  InputStreamReader isr = new InputStreamReader(new FileInputStream(path));
+	  BufferedReader br = new BufferedReader(isr);
+	  while(br.read()!=-1)//read()=-1代表数据读取完毕
+	  {
+	   String s = br.readLine();
+	   Pattern p = Pattern.compile("\\b[A-Za-z]+\\b");//创建以字母为开头或结尾的模板
+	      Matcher m = p.matcher(s.toString());
+	     while(m.find())
+	     {
+	    	 countword++;
+	     }
+	    	 
+	  }
+	  
+	  isr.close();//关闭文件
+	
+	  System.out.println("单词个数 "+countword );
+	 
+	}public static void lineNum()throws Exception
+	{Scanner input = new Scanner(System.in);
+	  System.out.println("please input path:");
+	  String path = input.next();
+	  int countline = 0;
+	  int countcommentline = 0;
+	  InputStreamReader isr = new InputStreamReader(new FileInputStream(path));
+	  BufferedReader br = new BufferedReader(isr);
+	  while(br.read()!=-1)//read()=-1代表数据读取完毕
+	  {
+	   String s = br.readLine();
+	   Pattern p = Pattern.compile("((/)|(/\\*+)|((^\\s)*\\*)|((^\\s)*\\*+/))+");//创建以注释符为开头或结尾的模板
+	 
+	      Matcher m = p.matcher(s.toString());
+	     while(m.find())
+	     {
+	    	 countcommentline++;
+	     }
+	   countline++;//因为是按行读取，所以每次增加一即可计算出行的数目
+	  }
+	  isr.close();//关闭文件
+	  System.out.println("行数 "+countline); 
+	  System.out.println("注释行 "+countcommentline );
+	}
+	public static void blanklineNum()throws Exception
+	{Scanner input = new Scanner(System.in);
+	  System.out.println("please input path:");
+	  String path = input.next();
+	  int countblankline = 0;
+	  InputStreamReader isr = new InputStreamReader(new FileInputStream(path));
+	  BufferedReader br = new BufferedReader(isr);
+	  while(br.read()!=-1)//read()=-1代表数据读取完毕
+	  {
+	   String s = br.readLine();
+	   if(s.length()<=1)
+	   {
+		   countblankline++;
+	   } 
+	  }
+	  isr.close();//关闭文件
+	  System.out.println("空行数 "+countblankline);
+	}
+	public static void alllineNum()throws Exception
+	{Scanner input = new Scanner(System.in);
+	  System.out.println("please input path:");
+	  String path = input.next();
+	  int countline = 0;
+	  int countcommentline = 0;
+	  int countblankline = 0;
+	  int codeNum=0;
+	  InputStreamReader isr = new InputStreamReader(new FileInputStream(path));
+	  BufferedReader br = new BufferedReader(isr);
+	  while(br.read()!=-1)//read()=-1代表数据读取完毕
+	  {
+	   String s = br.readLine();
+	   if(s.length()<=1)
+	   {
+		   countblankline++;
+	   } 
+	   Pattern p = Pattern.compile("((/)|(/\\*+)|((^\\s)*\\*)|((^\\s)*\\*+/))+");//创建以注释符为开头或结尾的模板
+	 
+	      Matcher m = p.matcher(s.toString());
+	     while(m.find())
+	     {
+	    	 countcommentline++;
+	     }
+	   countline++;//因为是按行读取，所以每次增加一即可计算出行的数目
+	  }
+	  isr.close();//关闭文件
+	  codeNum=countline-countcommentline-countblankline;
+	  System.out.println("行数 "+countline); 
+	  System.out.println("注释行 "+countcommentline );
+	  System.out.println("空行数 "+countblankline);
+	  System.out.println("代码行 "+codeNum);
+	}
+	
+	public static void main(String[] args) throws Exception
+	{
+	
+		String bString = null;
+		System.out.println("请输入命令 ");
+		Scanner ms= new Scanner(System.in);
+		if (ms.hasNext()) {
+			bString = ms.next();
+		}
+		if (bString.equals("-c"))
+			{
+			s.charNum();
+			}
+		if (bString.equals("-w"))
+		   {
+		s.wordNum();
+		   }
+		if (bString.equals("-l"))
+		   {
+		s.lineNum();
+		   }
+		if (bString.equals("-b"))
+		   {
+		s.blanklineNum();
+		
+		   }
+		if (bString.equals("-a"))
+		   {
+		s.alllineNum();
+		
+		   }
+			
+	}
+}
